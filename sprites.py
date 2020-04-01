@@ -31,8 +31,8 @@ class Player(Sprite):
             self.acc.x = -PLAYER_ACC
         if keys[pg.K_RIGHT]:
             self.acc.x = PLAYER_ACC
-        if keys[pg.K_UP]:
-            self.acc.y = -PLAYER_ACC
+        # if keys[pg.K_UP]:
+        #     self.acc.y = -PLAYER_ACC
         if keys[pg.K_DOWN]:
             self.acc.y = PLAYER_ACC
         if keys[pg.K_SPACE]:
@@ -56,11 +56,27 @@ class Player(Sprite):
         self.rect.center = self.pos
 
 class Platform(Sprite):
-    def __init__(self, x, y, w, h):
+    def __init__(self, color, x, y, w, h, velx, vely):
         Sprite.__init__(self)
         self.image = pg.Surface((w,h))
-        self.image.fill(GREEN)
+        self.image.fill(color)
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.vx = velx
+        self.vy = vely
+    def update(self):
+        self.rect.x += self.vx
+        self.rect.y += self.vy
+        if self.rect.x >= WIDTH-10:
+            self.vx = -self.vx
+        if self.rect.x <= 10:
+            self.vx = -self.vx
+        if self.rect.y <= 10:
+            self.vy = -self.vy
+        if self.rect.y > HEIGHT-10:
+            self.vy = -self.vy
+
+
+        
 
