@@ -51,6 +51,12 @@ class Game:
             self.all_sprites.add(x)
             self.platforms.add(x)
             self.boards.add(x)
+        for x in range(0,3):
+            x = Platform(RED, rand.randint(100,400),rand.randint(150,500), rand.randint(50, WIDTH-100), rand.randint(10, 40), rand.randint(0,5), 0 )
+            self.all_sprites.add(x)
+            self.deaths.add(x)
+            self.platforms.add(x)
+            self.boards.add(x)
         
         self.run()
 
@@ -67,11 +73,16 @@ class Game:
         # Game Loop - Update
         self.all_sprites.update()
         hits = pg.sprite.spritecollide(self.player, self.platforms, False)
+        gameOver = pg.sprite.spritecollide(self.player, self.deaths, False)
         # if hits and self.player.pos.y == hits[0].rect.bottom:
         #     self.player.vel.y = -self.player.vel.y
         if hits:
+            if gameOver:
+                print("You lost")
+                self.playing = False
+                pg.quit
             #This code was copied from Mr. Cozort's test file
-            if self.player.rect.top > hits[0].rect.top:
+            elif self.player.rect.top > hits[0].rect.top:
                 self.player.vel.y = 15
                 self.player.rect.top = hits[0].rect.bottom + 5
             else:
@@ -89,6 +100,7 @@ class Game:
                 self.player.pos.y = win[0].rect.top-20
                 print("You win the game")
                 self.playing = False
+                pg.quit
             
 
     def events(self):
