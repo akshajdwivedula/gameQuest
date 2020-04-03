@@ -27,23 +27,22 @@ class Game:
     def new(self):
         # start a new game
         self.all_sprites = Group()
+        self.deaths = pg.sprite.Group()
+        self.goals = pg.sprite.Group()
+        goal = Goal(self)
+        self.all_sprites.add(goal)
+        self.goals.add(goal)
         self.platforms = pg.sprite.Group()
         self.player = Player(self)
         self.all_sprites.add(self.player)
-        ground = Platform(RED,0, HEIGHT-40, WIDTH, 40, 0, 0)
+        ground = Platform(GREEN,0, HEIGHT-40, WIDTH, 40, 0, 0)
         self.all_sprites.add(ground)
         self.platforms.add(ground)
-        for x in range(0,2):
-            x = Platform(GREEN, rand.randint(100,400),rand.randint(100,500), rand.randint(50, WIDTH-100), rand.randint(10, 40), rand.randint(0,5), 0 )
-            self.all_sprites.add(x)
-            self.platforms.add(x)
-        # self.plat1 = Platform(RED,200, 400, 150, 20, 5, 0)
-        # self.plat2 = Platform(RED, 300, 100, 150, 20, 5, 0)
+        # for x in range(0,5):
+        #     x = Platform(BLUE, rand.randint(100,400),rand.randint(100,500), rand.randint(50, WIDTH-100), rand.randint(10, 40), rand.randint(0,5), 0 )
+        #     self.all_sprites.add(x)
+        #     self.platforms.add(x)
         
-        # self.all_sprites.add(self.plat1)
-        # self.platforms.add(self.plat1)
-        # self.all_sprites.add(self.plat2)
-        # self.platforms.add(self.plat2)
         self.run()
 
     def run(self):
@@ -62,8 +61,33 @@ class Game:
         # if hits and self.player.pos.y == hits[0].rect.bottom:
         #     self.player.vel.y = -self.player.vel.y
         if hits:
-            self.player.vel.y = 0
-            self.player.pos.y = hits[0].rect.top-20
+            #This code was copied from Mr. Cozort's test file
+            if self.player.rect.top > hits[0].rect.top:
+                self.player.vel.y = 15
+                self.player.rect.top = hits[0].rect.bottom + 5
+            else:
+                self.player.vel.y = 0
+                self.player.pos.y = hits[0].rect.top-20
+        # if hits and self.player.pos.y == hits[0].rect.bottom:
+        #     self.player.vel.y = -self.player.vel.y
+        if hits:
+            #This code was copied from Mr. Cozort's test file
+            if self.player.rect.top > hits[0].rect.top:
+                self.player.vel.y = 15
+                self.player.rect.top = hits[0].rect.bottom + 5
+            else:
+                self.player.vel.y = 0
+                self.player.pos.y = hits[0].rect.top-20
+        win = pg.sprite.spritecollide(self.player, self.goals, False)
+        if win:
+            if self.player.rect.top > hits[0].rect.top:
+                self.player.vel.y = 15
+                self.player.rect.top = hits[0].rect.bottom + 5
+            else:
+                self.player.vel.y = 0
+                print("You win the game")
+                self.playing = False
+
             
 
     def events(self):

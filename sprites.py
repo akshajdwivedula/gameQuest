@@ -10,7 +10,7 @@ class Player(Sprite):
         Sprite.__init__(self)
         self.game = game
         self.image = pg.Surface((30, 45))
-        self.image.fill(BLUE)
+        self.image.fill(WHITE)
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2, HEIGHT / 2)
         self.pos = vec(WIDTH / 2, HEIGHT / 2)
@@ -24,6 +24,8 @@ class Player(Sprite):
         self.rect.x -= -1
         if hits:
             self.vel.y = -40
+    # def death(self):
+    #     deathJump = pg.sprite.spritecollide(self, self.game.death, False)
     def update(self):
         self.acc = vec(0, 0.5)
         keys = pg.key.get_pressed()
@@ -77,6 +79,35 @@ class Platform(Sprite):
         if self.rect.y > HEIGHT-10:
             self.vy = -self.vy
 
+class Goal(Sprite):
+    def __init__(self, game):
+        Sprite.__init__(self)
+        self.image = pg.Surface((75,20))
+        self.image.fill(YELLOW)
+        self.rect = self.image.get_rect()
+        self.rect.y = 600
+        self.rect.x = WIDTH/2
 
+# class Death(Sprite):
+#     def __init__(self, x, y, w, h, velx, vely):
+#         Sprite.__init__(self)
+#         self.image = pg.Surface((w,h))
+#         self.image.fill(RED)
+#         self.rect = self.image.get_rect()
+#         self.rect.x = x
+#         self.rect.y = y
+#         self.vx = velx
+#         self.vy = vely
+#     def update(self):
+#         self.rect.x += self.vx
+#         self.rect.y += self.vy
+#         if self.rect.x >= WIDTH-10:
+#             self.vx = -self.vx
+#         if self.rect.x <= 10:
+#             self.vx = -self.vx
+#         if self.rect.y <= 10:
+#             self.vy = -self.vy
+#         if self.rect.y > HEIGHT-10:
+#             self.vy = -self.vy
         
 
