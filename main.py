@@ -9,9 +9,10 @@
 
 import pygame as pg
 from pygame.sprite import Group
-import random
+import random as rand
 from settings import *
 from sprites import *
+import math
 
 class Game:
     def __init__(self):
@@ -29,15 +30,20 @@ class Game:
         self.platforms = pg.sprite.Group()
         self.player = Player(self)
         self.all_sprites.add(self.player)
-        ground = Platform(GREEN,0, HEIGHT-40, WIDTH, 40, 0, 0)
-        plat1 = Platform(RED,200, 400, 150, 20, 5, 0)
-        plat2 = Platform(RED, 300, 100, 150, 20, 5, 0)
+        ground = Platform(RED,0, HEIGHT-40, WIDTH, 40, 0, 0)
         self.all_sprites.add(ground)
         self.platforms.add(ground)
-        self.all_sprites.add(plat1)
-        self.platforms.add(plat1)
-        self.all_sprites.add(plat2)
-        self.platforms.add(plat2)
+        for x in range(0,2):
+            x = Platform(GREEN, rand.randint(100,400),rand.randint(100,500), rand.randint(50, WIDTH-100), rand.randint(10, 40), rand.randint(0,5), 0 )
+            self.all_sprites.add(x)
+            self.platforms.add(x)
+        # self.plat1 = Platform(RED,200, 400, 150, 20, 5, 0)
+        # self.plat2 = Platform(RED, 300, 100, 150, 20, 5, 0)
+        
+        # self.all_sprites.add(self.plat1)
+        # self.platforms.add(self.plat1)
+        # self.all_sprites.add(self.plat2)
+        # self.platforms.add(self.plat2)
         self.run()
 
     def run(self):
@@ -53,11 +59,12 @@ class Game:
         # Game Loop - Update
         self.all_sprites.update()
         hits = pg.sprite.spritecollide(self.player, self.platforms, False)
+        # if hits and self.player.pos.y == hits[0].rect.bottom:
+        #     self.player.vel.y = -self.player.vel.y
         if hits:
             self.player.vel.y = 0
             self.player.pos.y = hits[0].rect.top-20
-            # self.player.vel.x = self.platforms.vx
-
+            
 
     def events(self):
         # Game Loop - events
