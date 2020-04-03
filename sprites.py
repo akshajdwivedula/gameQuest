@@ -58,6 +58,7 @@ class Player(Sprite):
         self.rect.center = self.pos
 
 class Platform(Sprite):
+    #deletion of death sprite to then add to platform
     def __init__(self, color, x, y, w, h, velx, vely):
         Sprite.__init__(self)
         self.image = pg.Surface((w,h))

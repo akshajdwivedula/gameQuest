@@ -1,5 +1,6 @@
 # game options/settings
 TITLE = "Jumpy!"
+#slight change of WIDTH
 WIDTH = 500
 HEIGHT = 600
 FPS = 60

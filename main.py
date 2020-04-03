@@ -100,6 +100,7 @@ class Game:
                 self.player.pos.y = win[0].rect.top-20
                 print("You win the game")
                 self.playing = False
+                #ends the game and basically sets to new game
                 pg.quit
             
 
