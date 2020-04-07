@@ -6,6 +6,7 @@
 # Player movement
 
 # Copyright 2019 KidsCanCode LLC -/- All rights reserved.
+#Citations: Some code was taken/modified from Mr. Cozort's test file
 
 import pygame as pg
 from pygame.sprite import Group
@@ -28,12 +29,16 @@ class Game:
         # start a new game
         #sets up all the various groups necessary for the game including the allsprites and the various single sprite groups
         self.all_sprites = Group()
-        self.deaths = pg.sprite.Group()
-        self.goals = pg.sprite.Group()
+        #boards is the general group for all non-player sprites
         self.boards = pg.sprite.Group()
+        #deaths is the group for the "lava" platforms
+        self.deaths = pg.sprite.Group()
+        #goals is the group for the goal platform
+        self.goals = pg.sprite.Group()
+        #platforms is the group for all the non-goal platforms
         self.platforms = pg.sprite.Group()
         #establishes the goal sprite that is the goal of the game
-        goal = Goal(self)
+        goal = Platform(ORANGE, WIDTH/2, 100, 75, 20, 0, 0)
         self.all_sprites.add(goal)
         self.goals.add(goal)
         self.boards.add(goal)
@@ -51,6 +56,8 @@ class Game:
             self.all_sprites.add(x)
             self.platforms.add(x)
             self.boards.add(x)
+        '''second for loop that adds these platforms with RED as the coloration to the death group, thereby creating a difference between the two platform
+        despite both being in the same class - sort of a sub-class without creating a new class'''
         for x in range(0,3):
             x = Platform(RED, rand.randint(100,400),rand.randint(150,500), rand.randint(50, WIDTH-100), rand.randint(10, 40), rand.randint(0,5), 0 )
             self.all_sprites.add(x)
@@ -74,14 +81,15 @@ class Game:
         self.all_sprites.update()
         hits = pg.sprite.spritecollide(self.player, self.platforms, False)
         gameOver = pg.sprite.spritecollide(self.player, self.deaths, False)
-        # if hits and self.player.pos.y == hits[0].rect.bottom:
-        #     self.player.vel.y = -self.player.vel.y
+        
         if hits:
+            #happens before the bounce off the bottom to make the game even harder 
             if gameOver:
                 print("You lost")
                 self.playing = False
                 pg.quit
-            #This code was copied from Mr. Cozort's test file
+            #This code was copied from Mr. Cozort's test file with slight alteration for the location
+            #Code essentially states that if the player sprite's top location blurs into the position of the platform sprite, set velocity to go downard and relocate the sprite to the bottom
             elif self.player.rect.top > hits[0].rect.top:
                 self.player.vel.y = 15
                 self.player.rect.top = hits[0].rect.bottom + 5
@@ -92,12 +100,15 @@ class Game:
         #     self.player.vel.y = -self.player.vel.y
         win = pg.sprite.spritecollide(self.player, self.goals, False)
         if win:
+            #same logic of hitting the bottom
             if self.player.rect.top > win[0].rect.top:
                 self.player.vel.y = 15
                 self.player.rect.top = win[0].rect.bottom +5
+            #same landing spot but different stuff after that
             else:
                 self.player.vel.y = 0
                 self.player.pos.y = win[0].rect.top-20
+                #sets self.playing to false to reset the game
                 print("You win the game")
                 self.playing = False
                 #ends the game and basically sets to new game
