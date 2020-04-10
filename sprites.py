@@ -56,6 +56,10 @@ class Player(Sprite):
             self.pos.y = 0
         self.rect.center = self.pos
 
+'''Moving platforms took the existing platform class and just added velocity components by adding in velx and vely to represent self.vx and self.vy
+    The addition of an additional set of if statements is there to make sure the platforms look like they are moving from left to right across the play area.
+    Platforms are then ascribed different roles in the game based on their color - ORANGE is the goal, RED is an enemy, and BLUE is a safety zone.
+    All three are part of the moving platform class but are added to different sprite groups that interact with the user in different ways - essentially creating a pseudo-subclass'''
 class Platform(Sprite):
     #platform sprites can be customized to a large extent - critical difference is the color and the speed
     def __init__(self, color, x, y, w, h, velx, vely):

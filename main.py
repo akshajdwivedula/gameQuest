@@ -8,14 +8,18 @@
 # Copyright 2019 KidsCanCode LLC -/- All rights reserved.
 #Citations: Some code was taken/modified from Mr. Cozort's test file
 
+
+#importing libraries from pythong - as feature provides shorthand for coding
 import pygame as pg
 from pygame.sprite import Group
 import random as rand
+#modularity - importng both the settings and the sprites file and the properties from said files
 from settings import *
 from sprites import *
 import math
 
 class Game:
+    #by setting class Game, all sprites settings that have self.game now become just self. 
     def __init__(self):
         # initialize game window, etc
         pg.init()
