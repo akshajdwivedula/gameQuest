@@ -38,14 +38,14 @@ class Game:
         #deaths is the group for the "lava" platforms
         self.deaths = pg.sprite.Group()
         #goals is the group for the goal platform
-        self.goals = pg.sprite.Group()
+        #self.goals = pg.sprite.Group()
         #platforms is the group for all the non-goal platforms
         self.platforms = pg.sprite.Group()
         #establishes the goal sprite that is the goal of the game
-        goal = Platform(ORANGE, WIDTH/2, 100, 75, 20, 0, 0)
-        self.all_sprites.add(goal)
-        self.goals.add(goal)
-        self.boards.add(goal)
+        # goal = Platform(ORANGE, WIDTH/2, 100, 75, 20, 0, 0)
+        # self.all_sprites.add(goal)
+        # self.goals.add(goal)
+        # self.boards.add(goal)
         #establishes and defines the player in the game itself
         self.player = Player(self)
         self.all_sprites.add(self.player)
@@ -100,24 +100,12 @@ class Game:
             else:
                 self.player.vel.y = 0
                 self.player.pos.y = hits[0].rect.top-20
-        # if hits and self.player.pos.y == hits[0].rect.bottom:
-        #     self.player.vel.y = -self.player.vel.y
-        win = pg.sprite.spritecollide(self.player, self.goals, False)
-        if win:
-            #same logic of hitting the bottom
-            if self.player.rect.top > win[0].rect.top:
-                self.player.vel.y = 15
-                self.player.rect.top = win[0].rect.bottom +5
-            #same landing spot but different stuff after that
-            else:
-                self.player.vel.y = 0
-                self.player.pos.y = win[0].rect.top-20
-                #sets self.playing to false to reset the game
-                print("You win the game")
-                self.playing = False
-                #ends the game and basically sets to new game
-                pg.quit
-            
+ 
+        if self.player.rect.top <= HEIGHT / 4:
+            self.player.pos.y += abs(self.player.vel.y)  
+            for plat in self.platforms:
+                plat.rect.y += abs(self.player.vel.y)
+                
 
     def events(self):
         # Game Loop - events
