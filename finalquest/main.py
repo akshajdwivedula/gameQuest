@@ -36,9 +36,8 @@ class Game:
         #boards is the general group for all non-player sprites
         self.boards = pg.sprite.Group()
         #deaths is the group for the "lava" platforms
+        self.safes = pg.sprite.Group()
         self.deaths = pg.sprite.Group()
-        #goals is the group for the goal platform
-        #self.goals = pg.sprite.Group()
         #platforms is the group for all the non-goal platforms
         self.platforms = pg.sprite.Group()
         #establishes the goal sprite that is the goal of the game
@@ -55,9 +54,15 @@ class Game:
         self.platforms.add(ground)
         self.boards.add(ground)
         #for loop that populates n number of platforms that are safe and add them to all the various groups
+        
+        
+        self.run()
+
+    def platcreation(self):
         for x in range(0,5):
             x = Platform(BLUE, rand.randint(100,400),rand.randint(150,500), rand.randint(50, WIDTH-100), rand.randint(10, 40), rand.randint(0,5), 0 )
             self.all_sprites.add(x)
+            self.safes.add(x)
             self.platforms.add(x)
             self.boards.add(x)
         '''second for loop that adds these platforms with RED as the coloration to the death group, thereby creating a difference between the two platform
@@ -68,9 +73,7 @@ class Game:
             self.deaths.add(x)
             self.platforms.add(x)
             self.boards.add(x)
-        
-        self.run()
-
+    
     def run(self):
         # Game Loop
         self.playing = True
@@ -83,6 +86,27 @@ class Game:
     def update(self):
         # Game Loop - Update
         self.all_sprites.update()
+        if self.player.rect.top <= HEIGHT / 4:
+            self.player.pos.y += abs(self.player.vel.y)  
+            for plat in self.platforms:
+                plat.rect.y += abs(self.player.vel.y)
+                if plat.rect.top >= HEIGHT:
+                    plat.kill()
+        ##spawn new platforms
+        while len(self.platforms) < 8:
+            if len(self.safes) < 5:
+                plat = Platform(BLUE, rand.randint(100,400),rand.randint(150,500), rand.randint(50, WIDTH-100), rand.randint(10, 40), rand.randint(0,5), 0 )
+                self.boards.add(plat)
+                self.platforms.add(plat)
+                self.all_sprites.add(plat)
+                self.safes.add(plat)
+            if len(self.deaths) < 3:
+                plat = Platform(RED, rand.randint(100,400),rand.randint(150,500), rand.randint(50, WIDTH-100), rand.randint(10, 40), rand.randint(0,5), 0 )
+                self.boards.add(plat)
+                self.platforms.add(plat)
+                self.all_sprites.add(plat)
+                self.deaths.add(plat)
+
         hits = pg.sprite.spritecollide(self.player, self.platforms, False)
         gameOver = pg.sprite.spritecollide(self.player, self.deaths, False)
         
@@ -101,11 +125,7 @@ class Game:
                 self.player.vel.y = 0
                 self.player.pos.y = hits[0].rect.top-20
  
-        if self.player.rect.top <= HEIGHT / 4:
-            self.player.pos.y += abs(self.player.vel.y)  
-            for plat in self.platforms:
-                plat.rect.y += abs(self.player.vel.y)
-                
+        
 
     def events(self):
         # Game Loop - events
