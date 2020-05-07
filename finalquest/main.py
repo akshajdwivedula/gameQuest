@@ -94,18 +94,32 @@ class Game:
                     plat.kill()
         ##spawn new platforms
         while len(self.platforms) < 8:
-            if len(self.safes) < 5:
+            if len(self.safes) < 3:
                 plat = Platform(BLUE, rand.randint(100,400),rand.randint(150,500), rand.randint(50, WIDTH-100), rand.randint(10, 40), rand.randint(0,5), 0 )
                 self.boards.add(plat)
                 self.platforms.add(plat)
                 self.all_sprites.add(plat)
                 self.safes.add(plat)
-            if len(self.deaths) < 3:
+            elif len(self.deaths) < 1:
                 plat = Platform(RED, rand.randint(100,400),rand.randint(150,500), rand.randint(50, WIDTH-100), rand.randint(10, 40), rand.randint(0,5), 0 )
                 self.boards.add(plat)
                 self.platforms.add(plat)
                 self.all_sprites.add(plat)
                 self.deaths.add(plat)
+            else:
+                x = rand.randint(0,1)
+                if x == 0:
+                    plat = Platform(RED, rand.randint(100,400),rand.randint(150,500), rand.randint(50, WIDTH-100), rand.randint(10, 40), rand.randint(0,5), 0 )
+                    self.boards.add(plat)
+                    self.platforms.add(plat)
+                    self.all_sprites.add(plat)
+                    self.deaths.add(plat)
+                if x == 1:
+                    plat = Platform(BLUE, rand.randint(100,400),rand.randint(150,500), rand.randint(50, WIDTH-100), rand.randint(10, 40), rand.randint(0,5), 0 )
+                    self.boards.add(plat)
+                    self.platforms.add(plat)
+                    self.all_sprites.add(plat)
+                    self.safes.add(plat)
 
         hits = pg.sprite.spritecollide(self.player, self.platforms, False)
         gameOver = pg.sprite.spritecollide(self.player, self.deaths, False)
