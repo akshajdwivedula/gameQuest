@@ -8,6 +8,7 @@ vec = pg.math.Vector2
 class Player(Sprite):
     def __init__(self, game):
         Sprite.__init__(self)
+        self.health = 100
         self.game = game
         self.image = pg.Surface((30, 45))
         self.image.fill(WHITE)
@@ -16,8 +17,6 @@ class Player(Sprite):
         self.pos = vec(WIDTH / 2, HEIGHT / 2)
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
-    def myMethod(self):
-        pass
     def jump(self):
         self.rect.x += 1
         hits = pg.sprite.spritecollide(self, self.game.boards, False)
@@ -33,8 +32,8 @@ class Player(Sprite):
         if keys[pg.K_RIGHT]:
             self.acc.x = PLAYER_ACC
         #got rid of the up button because it allows the player to fly
-        # if keys[pg.K_UP]:
-        #     self.acc.y = -PLAYER_ACC
+        if keys[pg.K_UP]:
+            self.acc.y = -PLAYER_ACC
         if keys[pg.K_DOWN]:
             self.acc.y = PLAYER_ACC
         #runs the method jump
