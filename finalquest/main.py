@@ -1,7 +1,7 @@
 ###This file was altered/created by: Akshaj Dwivedula
 
 # KidsCanCode - Game Development with Pygame video series
-# Jumpy! (a platform game) - Part 2
+# Jumpy! (a platform game) - Part 2 and Part 5
 # Video link: https://www.youtube.com/watch?v=8LRI0RLKyt0
 # Player movement
 
@@ -44,10 +44,6 @@ class Game:
         #platforms is the group for all the non-goal platforms
         self.platforms = pg.sprite.Group()
         #establishes the goal sprite that is the goal of the game
-        # goal = Platform(ORANGE, WIDTH/2, 100, 75, 20, 0, 0)
-        # self.all_sprites.add(goal)
-        # self.goals.add(goal)
-        # self.boards.add(goal)
         #establishes and defines the player in the game itself
         self.player = Player(self)
         self.all_sprites.add(self.player)
@@ -57,19 +53,25 @@ class Game:
         self.all_sprites.add(ground)
         self.platforms.add(ground)
         self.boards.add(ground)
+        #group that exists for the algorithm 
         self.tempGroup = Group()
+        #creates 5 initial platforms
         for x in range(0,5):
             if len(self.platforms) < 1:
                 x = Platform(BLUE, rand.randint(100,400),rand.randint(150,500), rand.randint(50, WIDTH-100), rand.randint(10, 40), rand.randint(0,5), 0 )
                 self.all_sprites.add(x)
                 self.safes.add(x)
                 self.platforms.add(x)
-                self.boards.add(x) 
+                self.boards.add(x)
+            #this algorithm was taken from Mr. Cozort's test file - it essentially adds the created platform in a temp group while testing if it will collide with existing sprites and platforms. 
+            # It then removes it from the tempGroup and adds it to the actual platforms
             while True:
                 x = Platform(BLUE, rand.randint(100,400),rand.randint(150,500), rand.randint(50, WIDTH-100), rand.randint(10, 40), rand.randint(0,5), 0 )
                 self.tempGroup.add(x)
+                #checks for collisions for between the newly created platform and exisiting platforms
                 selfCollide = pg.sprite.groupcollide(self.tempGroup, self.platforms, True, False)
                 allCollide = pg.sprite.groupcollide(self.tempGroup, self.all_sprites, True, False)
+                #if no collisions happen (they are away from each other), then can be added
                 if not selfCollide and not allCollide:
                     self.platforms.add(x)
                     self.all_sprites.add(x)
@@ -77,9 +79,6 @@ class Game:
                     self.safes.add(x)
                     self.tempGroup.remove(x)
                     break
-        '''second for loop that adds these platforms with RED as the coloration to the death group, thereby creating a difference between the two platform
-        despite both being in the same class - sort of a sub-class without creating a new class'''
-        #for loop that populates n number of platforms that are safe and add them to all the various groups
         
         
         self.run()
@@ -111,6 +110,7 @@ class Game:
                 plat = Platform(BLUE, rand.randint(100,400),rand.randint(int(self.player.pos.y) - 30,int(self.player.pos.y)), rand.randint(50, WIDTH-100), rand.randint(10, 40), rand.randint(0,5), 0 )
                 self.tempGroup.add(plat)
                 selfCollide = pg.sprite.groupcollide(self.tempGroup, self.platforms, True, False)
+                #same as before for the algorithm
                 if not selfCollide:
                     self.platforms.add(plat)
                     self.all_sprites.add(plat)
@@ -123,6 +123,7 @@ class Game:
                 self.tempGroup.add(plat)
                 selfCollide = pg.sprite.groupcollide(self.tempGroup, self.platforms, True, False)
                 allCollide = pg.sprite.groupcollide(self.tempGroup, self.all_sprites, True, False)
+                #same as before
                 if not selfCollide and not allCollide:
                     self.platforms.add(plat)
                     self.all_sprites.add(plat)
@@ -132,6 +133,7 @@ class Game:
                     break
             else:
                 x = rand.randint(0,2)
+                #sets up random platform generation after enough of the first two by associating number with color (color creates a subcass)
                 if x == 0:
                     plat = Platform(RED, rand.randint(100,400),rand.randint(int(self.player.pos.y) - 30,int(self.player.pos.y)), rand.randint(50, WIDTH-100), rand.randint(10, 40), rand.randint(0,5), 0 )
                     self.tempGroup.add(plat)
@@ -179,6 +181,7 @@ class Game:
                 print("You lost")
                 self.playing = False
                 pg.quit
+            #special color has certain benefits 
             if restock:
                 self.player.health = 100
                 print("Health Restored! ")

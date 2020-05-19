@@ -8,6 +8,7 @@ vec = pg.math.Vector2
 class Player(Sprite):
     def __init__(self, game):
         Sprite.__init__(self)
+        #sets up player health here that gets altered in the main file
         self.health = 100
         self.game = game
         self.image = pg.Surface((30, 45))
@@ -21,7 +22,7 @@ class Player(Sprite):
         self.rect.x += 1
         hits = pg.sprite.spritecollide(self, self.game.boards, False)
         self.rect.x -= -1
-        #this setting is allowing a jump when on a board/platform. If hits, then they can jump upward
+        #this setting is allowing a jump when on a board/platform. If hits, then they can jump upward (This hit is focused on forward movement rather than landing on a platform)
         if hits:
             self.vel.y = -40
     def update(self):
@@ -31,7 +32,7 @@ class Player(Sprite):
             self.acc.x = -PLAYER_ACC
         if keys[pg.K_RIGHT]:
             self.acc.x = PLAYER_ACC
-        #got rid of the up button because it allows the player to fly
+        #established the up key to allow for player flight
         if keys[pg.K_UP]:
             self.acc.y = -PLAYER_ACC
         if keys[pg.K_DOWN]:
@@ -57,7 +58,7 @@ class Player(Sprite):
 
 '''Moving platforms took the existing platform class and just added velocity components by adding in velx and vely to represent self.vx and self.vy
     The addition of an additional set of if statements is there to make sure the platforms look like they are moving from left to right across the play area.
-    Platforms are then ascribed different roles in the game based on their color - ORANGE is the goal, RED is an enemy, and BLUE is a safety zone.
+    Platforms are then ascribed different roles in the game based on their color - GREEN is the health, RED is an enemy, and BLUE is a safety zone.
     All three are part of the moving platform class but are added to different sprite groups that interact with the user in different ways - essentially creating a pseudo-subclass'''
 class Platform(Sprite):
     #platform sprites can be customized to a large extent - critical difference is the color and the speed
@@ -85,8 +86,6 @@ class Platform(Sprite):
             self.vy = -self.vy
         if self.rect.y > HEIGHT-10:
             self.vy = -self.vy
-
-#was another class here - the Goal Sprite but that is actually unnecessary so the Goal class was removed
 
 
         
